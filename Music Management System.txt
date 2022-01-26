@@ -1,0 +1,5911 @@
+mysql> create database Music_Management_System;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> show databases;
++-------------------------+
+| Database                |
++-------------------------+
+| boat                    |
+| btecha1                 |
+| company                 |
+| emp                     |
+| employee                |
+| flavium                 |
+| helloemployee           |
+| information_schema      |
+| insta                   |
+| music_management_system |
+| myemployee              |
+| mysql                   |
+| performance_schema      |
+| sakila                  |
+| school                  |
+| sys                     |
+| world                   |
++-------------------------+
+17 rows in set (0.00 sec)
+
+mysql> use Music_Management_System;
+Database changed
+mysql> create table Movie(Movie_ID int primary key,Movie_Name varchar(35));
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> desc Movie;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Movie_ID   | int         | NO   | PRI | NULL    |       |
+| Movie_Name | varchar(35) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+mysql> create table Singer(Singer_ID int primary key,Singer_Name varchar(35),Gender varchar(10),Age int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Singer;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Singer_ID   | int         | NO   | PRI | NULL    |       |
+| Singer_Name | varchar(35) | YES  |     | NULL    |       |
+| Gender      | varchar(10) | YES  |     | NULL    |       |
+| Age         | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.04 sec)
+
+mysql> create table Composer(Composer_ID int primary key,Composer_Name varchar(35),Gender varchar(10),Age int);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc Composer;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| Composer_ID   | int         | NO   | PRI | NULL    |       |
+| Composer_Name | varchar(35) | YES  |     | NULL    |       |
+| Gender        | varchar(10) | YES  |     | NULL    |       |
+| Age           | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> create table Lyricist(Lyricist_ID int primary key,Lyricist_Name varchar(35),Gender varchar(10),Age int);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc Lyricist;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| Lyricist_ID   | int         | NO   | PRI | NULL    |       |
+| Lyricist_Name | varchar(35) | YES  |     | NULL    |       |
+| Gender        | varchar(10) | YES  |     | NULL    |       |
+| Age           | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+mysql> create table Song_Distributor(Distributor_Name varchar(40) primary key,Address varchar(50));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> desc Song_Distributor;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| Distributor_Name | varchar(40) | NO   | PRI | NULL    |       |
+| Address          | varchar(50) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+mysql> create table Song(Song_ID int primary key,Song_Name varchar(50),Category varchar(20),Movie_ID int,Lyricist_ID int,Date_of_release date,Distributor_Name varchar(40),foreign key(Movie_ID) references Movie(Movie_ID),foreign key(Lyricist_ID) references Lyricist(Lyricist_ID),foreign key(Distributor_Name) references Song_Distributor(Distributor_Name));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> desc Song;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| Song_ID          | int         | NO   | PRI | NULL    |       |
+| Song_Name        | varchar(50) | YES  |     | NULL    |       |
+| Category         | varchar(20) | YES  |     | NULL    |       |
+| Movie_ID         | int         | YES  | MUL | NULL    |       |
+| Lyricist_ID      | int         | YES  | MUL | NULL    |       |
+| Date_of_release  | date        | YES  |     | NULL    |       |
+| Distributor_Name | varchar(40) | YES  | MUL | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+7 rows in set (0.07 sec)
+
+mysql> create table Sings(Song_ID int,Singer_ID,foreign key(Song_ID) references Song(Song_ID),foreign key(Singer_ID) references Singer(Singer_ID));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',foreign key(Song_ID) references Song(Song_ID),foreign key(Singer_ID) references' at line 1
+mysql> create table Sings(Song_ID int,Singer_ID int,foreign key(Song_ID) references Song(Song_ID),foreign key(Singer_ID) references Singer(Singer_ID));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc Sings;
++-----------+------+------+-----+---------+-------+
+| Field     | Type | Null | Key | Default | Extra |
++-----------+------+------+-----+---------+-------+
+| Song_ID   | int  | YES  | MUL | NULL    |       |
+| Singer_ID | int  | YES  | MUL | NULL    |       |
++-----------+------+------+-----+---------+-------+
+2 rows in set (0.06 sec)
+
+mysql> create table Composes(Song_ID int,Composer_ID int,foreign key(Song_ID) references Song(Song_ID),foreign key(Composer_ID) references Composer(Composer_ID));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc Composes;
++-------------+------+------+-----+---------+-------+
+| Field       | Type | Null | Key | Default | Extra |
++-------------+------+------+-----+---------+-------+
+| Song_ID     | int  | YES  | MUL | NULL    |       |
+| Composer_ID | int  | YES  | MUL | NULL    |       |
++-------------+------+------+-----+---------+-------+
+2 rows in set (0.04 sec)
+
+mysql> update table Movie set Movie_Name not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table Movie set Movie_Name not null' at line 1
+mysql> alter table Movie set Movie_Name not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'set Movie_Name not null' at line 1
+mysql> alter table modify Movie set Movie_Name not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Movie set Movie_Name not null' at line 1
+mysql> alter table modify column Movie set Movie_Name not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'column Movie set Movie_Name not null' at line 1
+mysql> qwerty;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'qwerty' at line 1
+mysql> desc Movie;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Movie_ID   | int         | NO   | PRI | NULL    |       |
+| Movie_Name | varchar(35) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table modify Movie set Movie_Name varchar(50) not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Movie set Movie_Name varchar(50) not null' at line 1
+mysql> alter table Movie modify Movie_Name varchar(50) not null;
+Query OK, 0 rows affected (0.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Movie;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Movie_ID   | int         | NO   | PRI | NULL    |       |
+| Movie_Name | varchar(50) | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.06 sec)
+
+mysql> desc Singer;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Singer_ID   | int         | NO   | PRI | NULL    |       |
+| Singer_Name | varchar(35) | YES  |     | NULL    |       |
+| Gender      | varchar(10) | YES  |     | NULL    |       |
+| Age         | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> alter table Singer modify Singer_Name varchar(50) not null;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Song modify Song_Name varchar(50) not null;
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Composer modify Composer_Name varchar(50) not null;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Song modify Song_Name varchar(50) not null;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Lyricist modify Lyricist_Name varchar(50) not null;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Song_Distributor modify Distributor_Name varchar(50) not null;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into Movie value(1,"Dangal");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(2,"Scam 1992");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(3,"Tanhaji");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Movie value(4,"Malang");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(5,"Sadak 2");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(6,"Dil Bechara");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(7,"Baghban");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Singer value(101,"Arjit Singh","Male",33);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Singer value(102,"Shreya Ghoshal","Female",37);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Singer value(103,"Sonu Nigam","Male",47);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Singer value(104,"Armaan Malik","Male",25);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Singer value(105,"Neha Kakkar","Female",32);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Singer value(106,"Vishal Dadlani","Male",47);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Singer value(107,"Shekhar Ravjiani","Male",42);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Composer value(106mysql> insert into Movie value(1,"Dangal");,"Vishal Dadlani","Male",47);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'into Movie value(1,"Dangal")' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',"Vishal Dadlani","Male",47)' at line 1
+mysql> Query OK, 1 row affected (0.01 sec)
+    -> 
+    -> mysql> insert into Movie value(2,"Scam 1992");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(2,"Scam 1992' at line 1
+mysql> Query OK, 1 row affected (0.01 sec)
+    -> 
+    -> mysql> insert into Movie value(3,"Tanhaji");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(3,"Tanhaji")' at line 1
+mysql> Query OK, 1 row affected (0.00 sec)
+    -> 
+    -> mysql> insert into Movie value(4,"Malang");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Movie value(4,"Malang")' at line 1
+mysql> Query OK, 1 row affected (0.01 sec)
+    -> 
+    -> mysql> insert into Movie value(5,"Sadak 2");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(5,"Sadak 2")' at line 1
+mysql> Query OK, 1 row affected (0.01 sec)
+    -> 
+    -> mysql> insert into Movie value(6,"Dil Bechara");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(6,"Dil Becha' at line 1
+mysql> Query OK, 1 row affected (0.01 sec)
+    -> 
+    -> mysql> insert into Movie value(7,"Baghban");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Movie value(7,"Baghban")' at line 1
+mysql> select *from Singer;
++-----------+------------------+--------+------+
+| Singer_ID | Singer_Name      | Gender | Age  |
++-----------+------------------+--------+------+
+|       101 | Arjit Singh      | Male   |   33 |
+|       102 | Shreya Ghoshal   | Female |   37 |
+|       103 | Sonu Nigam       | Male   |   47 |
+|       104 | Armaan Malik     | Male   |   25 |
+|       105 | Neha Kakkar      | Female |   32 |
+|       106 | Vishal Dadlani   | Male   |   47 |
+|       107 | Shekhar Ravjiani | Male   |   42 |
++-----------+------------------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Singer value(108,"A.R. Rahman","Male",54);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Movie;
++----------+-------------+
+| Movie_ID | Movie_Name  |
++----------+-------------+
+|        1 | Dangal      |
+|        2 | Scam 1992   |
+|        3 | Tanhaji     |
+|        4 | Malang      |
+|        5 | Sadak 2     |
+|        6 | Dil Bechara |
+|        7 | Baghban     |
++----------+-------------+
+7 rows in set (0.00 sec)
+
+mysql> select *from Singer;
++-----------+------------------+--------+------+
+| Singer_ID | Singer_Name      | Gender | Age  |
++-----------+------------------+--------+------+
+|       101 | Arjit Singh      | Male   |   33 |
+|       102 | Shreya Ghoshal   | Female |   37 |
+|       103 | Sonu Nigam       | Male   |   47 |
+|       104 | Armaan Malik     | Male   |   25 |
+|       105 | Neha Kakkar      | Female |   32 |
+|       106 | Vishal Dadlani   | Male   |   47 |
+|       107 | Shekhar Ravjiani | Male   |   42 |
+|       108 | A.R. Rahman      | Male   |   54 |
++-----------+------------------+--------+------+
+8 rows in set (0.00 sec)
+
+mysql> delete from Singer where Singer_ID=108;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Singer;
++-----------+------------------+--------+------+
+| Singer_ID | Singer_Name      | Gender | Age  |
++-----------+------------------+--------+------+
+|       101 | Arjit Singh      | Male   |   33 |
+|       102 | Shreya Ghoshal   | Female |   37 |
+|       103 | Sonu Nigam       | Male   |   47 |
+|       104 | Armaan Malik     | Male   |   25 |
+|       105 | Neha Kakkar      | Female |   32 |
+|       106 | Vishal Dadlani   | Male   |   47 |
+|       107 | Shekhar Ravjiani | Male   |   42 |
++-----------+------------------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Composer value(111,"A.R. Rahman","Male",54);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Composer value(222,"Falguni Pathak","Female",50);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Composer value(104,"Armaan Malik","Male",25);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Composer value(107,"Shekhar Ravjiani","Male",42);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Composer value(106,"Vishal Dadlani","Male",47);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Composer;
++-------------+------------------+--------+------+
+| Composer_ID | Composer_Name    | Gender | Age  |
++-------------+------------------+--------+------+
+|         104 | Armaan Malik     | Male   |   25 |
+|         106 | Vishal Dadlani   | Male   |   47 |
+|         107 | Shekhar Ravjiani | Male   |   42 |
+|         111 | A.R. Rahman      | Male   |   54 |
+|         222 | Falguni Pathak   | Female |   50 |
++-------------+------------------+--------+------+
+5 rows in set (0.00 sec)
+
+mysql> insert into Lyricist value(11,"Gulzar","Male",86);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Lyricist value(12,"Irshad Kamil",49);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into Lyricist value(12,"Irshad Kamil","Male", 49);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Lyricist value(13,"Javed Akhtar","Male", 76);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Lyricist value(14,"Mithoon","Male",36);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Lyricist value(15,"Anvita Dutt","Female",49);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Lyricist;
++-------------+---------------+--------+------+
+| Lyricist_ID | Lyricist_Name | Gender | Age  |
++-------------+---------------+--------+------+
+|          11 | Gulzar        | Male   |   86 |
+|          12 | Irshad Kamil  | Male   |   49 |
+|          13 | Javed Akhtar  | Male   |   76 |
+|          14 | Mithoon       | Male   |   36 |
+|          15 | Anvita Dutt   | Female |   49 |
++-------------+---------------+--------+------+
+5 rows in set (0.00 sec)
+
+mysql> alter table Song-Distributor add column Website varchar(50);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-Distributor add column Website varchar(50)' at line 1
+mysql> alter table Song-Distributor add Website varchar(50);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-Distributor add Website varchar(50)' at line 1
+mysql> ALTER TABLE table_name
+    -> ;
+ERROR 1146 (42S02): Table 'music_management_system.table_name' doesn't exist
+mysql> alter table Song_Distributor add Website varchar(50);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Song_Distributor;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| Distributor_Name | varchar(50) | NO   | PRI | NULL    |       |
+| Address          | varchar(50) | YES  |     | NULL    |       |
+| Website          | varchar(50) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> ALTER TABLE Song_Distributor RENAME Column Address TO City;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Song_Distributor;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| Distributor_Name | varchar(50) | NO   | PRI | NULL    |       |
+| City             | varchar(50) | YES  |     | NULL    |       |
+| Website          | varchar(50) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> insert into Song_Distributor value("Saregama India","Kolkata","www.saregama.com");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Song_Distributor value("T-Series","New Delhi","www.tseries.com");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Song_Distributor value("Sony Music","New Delhi","www.sonymusic.com");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Song_Distributor value("Tips Industries","Mumbai","www.tips.in");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Song_Distributor;
++------------------+-----------+-------------------+
+| Distributor_Name | City      | Website           |
++------------------+-----------+-------------------+
+| Saregama India   | Kolkata   | www.saregama.com  |
+| Sony Music       | New Delhi | www.sonymusic.com |
+| T-Series         | New Delhi | www.tseries.com   |
+| Tips Industries  | Mumbai    | www.tips.in       |
++------------------+-----------+-------------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Song(501,"Dangal","Title Song",1,11,'2017-7-21',""T-Series);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '501,"Dangal","Title Song",1,11,'2017-7-21',""T-Series)' at line 1
+mysql> insert into Song(501,"Dangal","Title Song",1,11,'2017-7-21',"T-Series");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '501,"Dangal","Title Song",1,11,'2017-7-21',"T-Series")' at line 1
+mysql> insert into Song values(501,"Dangal","Title Song",1,11,'2017-7-21',"T-Series");
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into Song values(502,"Scam","BG TUNE",2,14,'2020-10-17',"Sony Music");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Song values(503,"Ghamand kar","Theme Song",3,14,'2020-2-20',"T-Series");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> mysql> insert into Movie value(504,"Tinak Tinak",3,12,'2020-2-20',"T-Series");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mysql> insert into Movie value(504,"Tinak Tinak",3,12,'2020-2-20',"T-Series")' at line 1
+mysql> insert into Song value(504,"Tinak Tinak",3,12,'2020-2-20',"T-Series");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into Song value(504,"Tinak Tinak","Patriotic",3,12,'2020-2-20',"T-Series");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into Song value(505,"Malang","Title Song",4,15,'2018-4-26',"Tips Industries");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Song value(506,"Ghar Chalen","Romantic Song",4,13,'2018-4-28',"Tips Industries");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select lyricist_Name from Song,Lyricist l1,Lyricist l2 where l1.movie_id <> l2.movie_id and movie_ID=4);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select lyricist_Name from song natural join lyricist l1 natural join lyricist l2  where l1.movie_id <> l2.movie_id and movie_ID=4);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select Lyricist_Name from Song natural join Lyricist natural join Movie where movie_Name="Malang";
++---------------+
+| Lyricist_Name |
++---------------+
+| Anvita Dutt   |
+| Javed Akhtar  |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into Song value(507,"Tum se hi","Romantic Song",5,12,'2016-9-13',"Saregama India");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Song value(508,"Shukriya","Sad Song",5,12,'2016-9-13',"Saregama India");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> delete from Movie where movie_id=7;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Song;
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+| Song_ID | Song_Name   | Category      | Movie_ID | Lyricist_ID | Date_of_release | Distributor_Name |
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+|     501 | Dangal      | Title Song    |        1 |          11 | 2017-07-21      | T-Series         |
+|     502 | Scam        | BG TUNE       |        2 |          14 | 2020-10-17      | Sony Music       |
+|     503 | Ghamand kar | Theme Song    |        3 |          14 | 2020-02-20      | T-Series         |
+|     504 | Tinak Tinak | Patriotic     |        3 |          12 | 2020-02-20      | T-Series         |
+|     505 | Malang      | Title Song    |        4 |          15 | 2018-04-26      | Tips Industries  |
+|     506 | Ghar Chalen | Romantic Song |        4 |          13 | 2018-04-28      | Tips Industries  |
+|     507 | Tum se hi   | Romantic Song |        5 |          12 | 2016-09-13      | Saregama India   |
+|     508 | Shukriya    | Sad Song      |        5 |          12 | 2016-09-13      | Saregama India   |
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+8 rows in set (0.00 sec)
+
+mysql> insert into Song value(509,"FriendZone","Pop Song",6,15,'2019-5-9',"Sony Music";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> insert into Song value(509,"FriendZone","Pop Song",6,15,'2019-5-9',"Sony Music");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Song value(510,"Dil Bechara","Title Song",6,15,'2019-5-12',"Sony Music");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Song;
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+| Song_ID | Song_Name   | Category      | Movie_ID | Lyricist_ID | Date_of_release | Distributor_Name |
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+|     501 | Dangal      | Title Song    |        1 |          11 | 2017-07-21      | T-Series         |
+|     502 | Scam        | BG TUNE       |        2 |          14 | 2020-10-17      | Sony Music       |
+|     503 | Ghamand kar | Theme Song    |        3 |          14 | 2020-02-20      | T-Series         |
+|     504 | Tinak Tinak | Patriotic     |        3 |          12 | 2020-02-20      | T-Series         |
+|     505 | Malang      | Title Song    |        4 |          15 | 2018-04-26      | Tips Industries  |
+|     506 | Ghar Chalen | Romantic Song |        4 |          13 | 2018-04-28      | Tips Industries  |
+|     507 | Tum se hi   | Romantic Song |        5 |          12 | 2016-09-13      | Saregama India   |
+|     508 | Shukriya    | Sad Song      |        5 |          12 | 2016-09-13      | Saregama India   |
+|     509 | FriendZone  | Pop Song      |        6 |          15 | 2019-05-09      | Sony Music       |
+|     510 | Dil Bechara | Title Song    |        6 |          15 | 2019-05-12      | Sony Music       |
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+10 rows in set (0.00 sec)
+
+mysql> selectm*from Singer;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selectm*from Singer' at line 1
+mysql> select *from Singer;
++-----------+------------------+--------+------+
+| Singer_ID | Singer_Name      | Gender | Age  |
++-----------+------------------+--------+------+
+|       101 | Arjit Singh      | Male   |   33 |
+|       102 | Shreya Ghoshal   | Female |   37 |
+|       103 | Sonu Nigam       | Male   |   47 |
+|       104 | Armaan Malik     | Male   |   25 |
+|       105 | Neha Kakkar      | Female |   32 |
+|       106 | Vishal Dadlani   | Male   |   47 |
+|       107 | Shekhar Ravjiani | Male   |   42 |
++-----------+------------------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> insert into sings value(501,101);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into sings value(502,107);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sings value(503,104);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into sings value(503,106);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sings value(504,101);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into sings value(504,107);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sings value(505,104);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sings value(506,101);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sings value(507,106);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into sings value(507,102);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into sings value(508,105);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sings value(509,106);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into sings value(510,101);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sings value(510,102);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select singer_Name from Song natural join sings Singer where song_id IS NULL;
+ERROR 1054 (42S22): Unknown column 'singer_Name' in 'field list'
+mysql> select singer_Name from Singer natural join sings where song_id IS NULL;
+Empty set (0.00 sec)
+
+mysql> insert into sings(Singer_ID) value(103);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select singer_Name from Song natural join sings Singer where song_id IS NULL;
+ERROR 1054 (42S22): Unknown column 'singer_Name' in 'field list'
+mysql> select singer_Name from Song natural join sings Singer where song_id IS NULL;
+ERROR 1054 (42S22): Unknown column 'singer_Name' in 'field list'
+mysql> select singer_Name from Singer natural join sings  where song_id IS NULL;
++-------------+
+| singer_Name |
++-------------+
+| Sonu Nigam  |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select Song_Name from Singer natural join Song natural join Sings where gender="Female";
++-------------+
+| Song_Name   |
++-------------+
+| Tum se hi   |
+| Dil Bechara |
+| Shukriya    |
++-------------+
+3 rows in set (0.00 sec)
+
+mysql> Select count(Singer_ID),Song_Name from Song natural join Sings group by Song_Name; 
++------------------+-------------+
+| count(Singer_ID) | Song_Name   |
++------------------+-------------+
+|                1 | Dangal      |
+|                1 | Scam        |
+|                2 | Ghamand kar |
+|                2 | Tinak Tinak |
+|                1 | Malang      |
+|                1 | Ghar Chalen |
+|                2 | Tum se hi   |
+|                1 | Shukriya    |
+|                1 | FriendZone  |
+|                2 | Dil Bechara |
++------------------+-------------+
+10 rows in set (0.01 sec)
+
+mysql> Select count(Singer_ID),Song_Name from Song natural join Sings group by Song_Name having > 1; 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '> 1' at line 1
+mysql> Select count(Singer_ID),Song_Name from Song natural join Sings group by Song_Name having count(singer_ID) > 1; 
++------------------+-------------+
+| count(Singer_ID) | Song_Name   |
++------------------+-------------+
+|                2 | Ghamand kar |
+|                2 | Tinak Tinak |
+|                2 | Tum se hi   |
+|                2 | Dil Bechara |
++------------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> Select count(Singer_ID),Song_Name from Song natural join Sings group by Song_Name having count(singer_ID) >= 1; 
++------------------+-------------+
+| count(Singer_ID) | Song_Name   |
++------------------+-------------+
+|                1 | Dangal      |
+|                1 | Scam        |
+|                2 | Ghamand kar |
+|                2 | Tinak Tinak |
+|                1 | Malang      |
+|                1 | Ghar Chalen |
+|                2 | Tum se hi   |
+|                1 | Shukriya    |
+|                1 | FriendZone  |
+|                2 | Dil Bechara |
++------------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> select *from sings;
++---------+-----------+
+| Song_ID | Singer_ID |
++---------+-----------+
+|     501 |       101 |
+|     502 |       107 |
+|     503 |       104 |
+|     503 |       106 |
+|     504 |       101 |
+|     504 |       107 |
+|     505 |       104 |
+|     506 |       101 |
+|     507 |       106 |
+|     507 |       102 |
+|     508 |       105 |
+|     509 |       106 |
+|     510 |       101 |
+|     510 |       102 |
+|    NULL |       103 |
++---------+-----------+
+15 rows in set (0.00 sec)
+
+mysql> select song_Name from song natural join sings where singer_ID in(104,106);
++-------------+
+| song_Name   |
++-------------+
+| Ghamand kar |
+| Malang      |
+| Ghamand kar |
+| Tum se hi   |
+| FriendZone  |
++-------------+
+5 rows in set (0.00 sec)
+
+mysql> select song_Name from song natural join sings where singer_ID=104 and singer_ID=106;
+Empty set (0.00 sec)
+
+mysql> select song_ID from sings where singer_ID=104 and singer_ID=106;
+Empty set (0.00 sec)
+
+mysql> select song_ID from sings where singer_ID=104 and select song_ID from sings where  singer_ID=106;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select song_ID from sings where  singer_ID=106' at line 1
+mysql> (select song_ID from sings where singer_ID=104) and (select song_ID from sings where  singer_ID=106);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'and (select song_ID from sings where  singer_ID=106)' at line 1
+mysql> select *from Composer;
++-------------+------------------+--------+------+
+| Composer_ID | Composer_Name    | Gender | Age  |
++-------------+------------------+--------+------+
+|         104 | Armaan Malik     | Male   |   25 |
+|         106 | Vishal Dadlani   | Male   |   47 |
+|         107 | Shekhar Ravjiani | Male   |   42 |
+|         111 | A.R. Rahman      | Male   |   54 |
+|         222 | Falguni Pathak   | Female |   50 |
++-------------+------------------+--------+------+
+5 rows in set (0.00 sec)
+
+mysql> insert into composes(501,106);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '501,106)' at line 1
+mysql> insert into composes values(501,106);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into composes values(502,104);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into composes values(503,111);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into composes values(504,104);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into composes values(504,106);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into composes values(505,111);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into composes values(506,106);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into composes values(507,222);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into composes values(507,222);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into composes values(508,111);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into composes values(508,222);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into composes values(509,104);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into composes values(510,111);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from Composes;
++---------+-------------+
+| Song_ID | Composer_ID |
++---------+-------------+
+|     501 |         106 |
+|     502 |         104 |
+|     503 |         111 |
+|     504 |         104 |
+|     504 |         106 |
+|     505 |         111 |
+|     506 |         106 |
+|     507 |         222 |
+|     507 |         222 |
+|     508 |         111 |
+|     508 |         222 |
+|     509 |         104 |
+|     510 |         111 |
++---------+-------------+
+13 rows in set (0.00 sec)
+
+mysql> select composer_ID from composes where song_ID=507;
++-------------+
+| composer_ID |
++-------------+
+|         222 |
+|         222 |
++-------------+
+2 rows in set (0.00 sec)
+
+mysql> delete from composes from where song_ID=507;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from where song_ID=507' at line 1
+mysql> delete from composes where song_ID=507;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> insert into composes values(507,222);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from Composes;
++---------+-------------+
+| Song_ID | Composer_ID |
++---------+-------------+
+|     501 |         106 |
+|     502 |         104 |
+|     503 |         111 |
+|     504 |         104 |
+|     504 |         106 |
+|     505 |         111 |
+|     506 |         106 |
+|     508 |         111 |
+|     508 |         222 |
+|     509 |         104 |
+|     510 |         111 |
+|     507 |         222 |
++---------+-------------+
+12 rows in set (0.00 sec)
+
+mysql> insert into composes(Composer_ID) values(107);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select composer_Name from composes c natural join sings s where c.Composer_ID=s.Singer_ID;
+ERROR 1054 (42S22): Unknown column 'composer_Name' in 'field list'
+mysql> select composer_Name from composes c natural join sings s where c.Composer_ID=s.Singer_ID;
+ERROR 1054 (42S22): Unknown column 'composer_Name' in 'field list'
+mysql> select composer_Name from composer natural join composes c natural join sings s where c.Composer_ID=s.Singer_ID;
+Empty set (0.01 sec)
+
+mysql> select composer_ID from composes natural join sings s where c.Composer_ID=s.Singer_ID;
+ERROR 1054 (42S22): Unknown column 'c.Composer_ID' in 'where clause'
+mysql> select composer_ID from composes c natural join sings s where c.Composer_ID=s.Singer_ID;
+Empty set (0.00 sec)
+
+mysql> select composer_ID from composes c natural join sings s in c.Composer_ID=s.Singer_ID;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in c.Composer_ID=s.Singer_ID' at line 1
+mysql> select composer_ID from composes c natural join sings s in c.Composer_ID=s.Singer_ID;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in c.Composer_ID=s.Singer_ID' at line 1
+mysql> select composer_Name from composer,singer where singer_ID=composer_ID;
++------------------+
+| composer_Name    |
++------------------+
+| Armaan Malik     |
+| Vishal Dadlani   |
+| Shekhar Ravjiani |
++------------------+
+3 rows in set (0.00 sec)
+
+mysql> select c.composer_ID from composes c natural join sings s where c.Composer_ID=s.Singer_ID;
+Empty set (0.00 sec)
+
+mysql> select *from Song;
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+| Song_ID | Song_Name   | Category      | Movie_ID | Lyricist_ID | Date_of_release | Distributor_Name |
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+|     501 | Dangal      | Title Song    |        1 |          11 | 2017-07-21      | T-Series         |
+|     502 | Scam        | BG TUNE       |        2 |          14 | 2020-10-17      | Sony Music       |
+|     503 | Ghamand kar | Theme Song    |        3 |          14 | 2020-02-20      | T-Series         |
+|     504 | Tinak Tinak | Patriotic     |        3 |          12 | 2020-02-20      | T-Series         |
+|     505 | Malang      | Title Song    |        4 |          15 | 2018-04-26      | Tips Industries  |
+|     506 | Ghar Chalen | Romantic Song |        4 |          13 | 2018-04-28      | Tips Industries  |
+|     507 | Tum se hi   | Romantic Song |        5 |          12 | 2016-09-13      | Saregama India   |
+|     508 | Shukriya    | Sad Song      |        5 |          12 | 2016-09-13      | Saregama India   |
+|     509 | FriendZone  | Pop Song      |        6 |          15 | 2019-05-09      | Sony Music       |
+|     510 | Dil Bechara | Title Song    |        6 |          15 | 2019-05-12      | Sony Music       |
++---------+-------------+---------------+----------+-------------+-----------------+------------------+
+10 rows in set (0.00 sec)
+
+mysql> select *from Movie;
++----------+-------------+
+| Movie_ID | Movie_Name  |
++----------+-------------+
+|        1 | Dangal      |
+|        2 | Scam 1992   |
+|        3 | Tanhaji     |
+|        4 | Malang      |
+|        5 | Sadak 2     |
+|        6 | Dil Bechara |
++----------+-------------+
+6 rows in set (0.00 sec)
+
+mysql> select song_Name from composer natural join composes natural join song natural join movie natural join lyricist where lyricist_Name="Gulzar" and  Singer_Name="Arjit Singh" and Composer_Name="Vishal Dadlani";
+ERROR 1054 (42S22): Unknown column 'Singer_Name' in 'where clause'
+mysql> select song_Name from composer natural join composes natural join song natural join movie natural join lyricist where lyricist_Name="Gulzar" and Composer_Name="Vishal Dadlani";
+Empty set (0.00 sec)
+
+mysql> select song_Name from composer natural join composes natural join song natural join movie natural join lyricist where lyricist_Name="Gulzar" and movie_name="Dangal" and Composer_Name="Vishal Dadlani";
+Empty set (0.00 sec)
+
+mysql> select song_Name from composer natural join composes natural join song natural join movie natural join lyricist where movie_name="Dangal" and Composer_Name="Vishal Dadlani";
+Empty set (0.00 sec)
+
+mysql> select song_Name from composer natural join composes natural join song natural join movie natural join lyricist where lyricist_Name="Gulzar" or Composer_Name="Vishal Dadlani";
+Empty set (0.00 sec)
+
+mysql> select song_Name from composer natural join composes natural join song natural join movie where movie_name="Dangal" and Composer_Name="Vishal Dadlani";
++-----------+
+| song_Name |
++-----------+
+| Dangal    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select song_Name from composer natural join composes natural join song natural join movie natural join lyricist where lyricist_Name="Gulzar" and movie_name="Dangal" and Composer_Name="Vishal Dadlani";
+Empty set (0.00 sec)
+
+mysql> select song_Name from composer natural join composes natural join song natural join movie natural join lyricist where lyricist_Name="Gulzar" and movie_name="Dangal";
+Empty set (0.00 sec)
+
+mysql> select song_Name from composer natural join composes natural join song natural join movie natural join lyricist where lyricist_Name="Gulzar" and movie_name="Dangal" and Composer_Name="Vishal Dadlani";
+Empty set (0.00 sec)
+
+mysql> select lyricist_name from song where song_id=501;
+ERROR 1054 (42S22): Unknown column 'lyricist_name' in 'field list'
+mysql> select lyricist_name from lyricist natural join song where song_id=501;
++---------------+
+| lyricist_name |
++---------------+
+| Gulzar        |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select song_Name from composes natural join song natural join movie natural join lyricist where lyricist_Name="Gulzar" and movie_name="Dangal";
++-----------+
+| song_Name |
++-----------+
+| Dangal    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select composer_name from composer natural join composes;
++------------------+
+| composer_name    |
++------------------+
+| Armaan Malik     |
+| Armaan Malik     |
+| Armaan Malik     |
+| Vishal Dadlani   |
+| Vishal Dadlani   |
+| Vishal Dadlani   |
+| Shekhar Ravjiani |
+| A.R. Rahman      |
+| A.R. Rahman      |
+| A.R. Rahman      |
+| A.R. Rahman      |
+| Falguni Pathak   |
+| Falguni Pathak   |
++------------------+
+13 rows in set (0.00 sec)
+
+mysql> select composer_name from composer natural join composes natural join sings;
++----------------+
+| composer_name  |
++----------------+
+| Armaan Malik   |
+| Armaan Malik   |
+| Armaan Malik   |
+| Armaan Malik   |
+| Vishal Dadlani |
+| Vishal Dadlani |
+| Vishal Dadlani |
+| Vishal Dadlani |
+| A.R. Rahman    |
+| A.R. Rahman    |
+| A.R. Rahman    |
+| A.R. Rahman    |
+| A.R. Rahman    |
+| A.R. Rahman    |
+| Falguni Pathak |
+| Falguni Pathak |
+| Falguni Pathak |
++----------------+
+17 rows in set (0.00 sec)
+
+mysql> select composer_name from composer natural join composes natural join sings where composer_id=singer_id;
+Empty set (0.00 sec)
+
+mysql> select composer_name,composer_id,singer_id from composer natural join composes natural join sings;
++----------------+-------------+-----------+
+| composer_name  | composer_id | singer_id |
++----------------+-------------+-----------+
+| Armaan Malik   |         104 |       107 |
+| Armaan Malik   |         104 |       101 |
+| Armaan Malik   |         104 |       107 |
+| Armaan Malik   |         104 |       106 |
+| Vishal Dadlani |         106 |       101 |
+| Vishal Dadlani |         106 |       101 |
+| Vishal Dadlani |         106 |       107 |
+| Vishal Dadlani |         106 |       101 |
+| A.R. Rahman    |         111 |       104 |
+| A.R. Rahman    |         111 |       106 |
+| A.R. Rahman    |         111 |       104 |
+| A.R. Rahman    |         111 |       105 |
+| A.R. Rahman    |         111 |       101 |
+| A.R. Rahman    |         111 |       102 |
+| Falguni Pathak |         222 |       105 |
+| Falguni Pathak |         222 |       106 |
+| Falguni Pathak |         222 |       102 |
++----------------+-------------+-----------+
+17 rows in set (0.00 sec)
+
+mysql> select composer_name,composer_id,singer_id from composer natural join composes;
+ERROR 1054 (42S22): Unknown column 'singer_id' in 'field list'
+mysql> select composer_name,composer_id from composer natural join composes;
++------------------+-------------+
+| composer_name    | composer_id |
++------------------+-------------+
+| Armaan Malik     |         104 |
+| Armaan Malik     |         104 |
+| Armaan Malik     |         104 |
+| Vishal Dadlani   |         106 |
+| Vishal Dadlani   |         106 |
+| Vishal Dadlani   |         106 |
+| Shekhar Ravjiani |         107 |
+| A.R. Rahman      |         111 |
+| A.R. Rahman      |         111 |
+| A.R. Rahman      |         111 |
+| A.R. Rahman      |         111 |
+| Falguni Pathak   |         222 |
+| Falguni Pathak   |         222 |
++------------------+-------------+
+13 rows in set (0.00 sec)
+
+mysql> select composer_name,composer_id from composer;
++------------------+-------------+
+| composer_name    | composer_id |
++------------------+-------------+
+| Armaan Malik     |         104 |
+| Vishal Dadlani   |         106 |
+| Shekhar Ravjiani |         107 |
+| A.R. Rahman      |         111 |
+| Falguni Pathak   |         222 |
++------------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select composer_name,composer_id from composes;
+ERROR 1054 (42S22): Unknown column 'composer_name' in 'field list'
+mysql> select composer_name,composer_id from composes natural join composer;
++------------------+-------------+
+| composer_name    | composer_id |
++------------------+-------------+
+| Armaan Malik     |         104 |
+| Armaan Malik     |         104 |
+| Armaan Malik     |         104 |
+| Vishal Dadlani   |         106 |
+| Vishal Dadlani   |         106 |
+| Vishal Dadlani   |         106 |
+| Shekhar Ravjiani |         107 |
+| A.R. Rahman      |         111 |
+| A.R. Rahman      |         111 |
+| A.R. Rahman      |         111 |
+| A.R. Rahman      |         111 |
+| Falguni Pathak   |         222 |
+| Falguni Pathak   |         222 |
++------------------+-------------+
+13 rows in set (0.00 sec)
+
+mysql> select composer_name,composer_id,singer_id from composes natural join composer natural join sings;
++----------------+-------------+-----------+
+| composer_name  | composer_id | singer_id |
++----------------+-------------+-----------+
+| Armaan Malik   |         104 |       107 |
+| Armaan Malik   |         104 |       101 |
+| Armaan Malik   |         104 |       107 |
+| Armaan Malik   |         104 |       106 |
+| Vishal Dadlani |         106 |       101 |
+| Vishal Dadlani |         106 |       101 |
+| Vishal Dadlani |         106 |       107 |
+| Vishal Dadlani |         106 |       101 |
+| A.R. Rahman    |         111 |       104 |
+| A.R. Rahman    |         111 |       106 |
+| A.R. Rahman    |         111 |       104 |
+| A.R. Rahman    |         111 |       105 |
+| A.R. Rahman    |         111 |       101 |
+| A.R. Rahman    |         111 |       102 |
+| Falguni Pathak |         222 |       105 |
+| Falguni Pathak |         222 |       106 |
+| Falguni Pathak |         222 |       102 |
++----------------+-------------+-----------+
+17 rows in set (0.00 sec)
+
+mysql> select *from composes natural join composer natural join sings;
++---------+-------------+----------------+--------+------+-----------+
+| Song_ID | Composer_ID | Composer_Name  | Gender | Age  | Singer_ID |
++---------+-------------+----------------+--------+------+-----------+
+|     502 |         104 | Armaan Malik   | Male   |   25 |       107 |
+|     504 |         104 | Armaan Malik   | Male   |   25 |       101 |
+|     504 |         104 | Armaan Malik   | Male   |   25 |       107 |
+|     509 |         104 | Armaan Malik   | Male   |   25 |       106 |
+|     501 |         106 | Vishal Dadlani | Male   |   47 |       101 |
+|     504 |         106 | Vishal Dadlani | Male   |   47 |       101 |
+|     504 |         106 | Vishal Dadlani | Male   |   47 |       107 |
+|     506 |         106 | Vishal Dadlani | Male   |   47 |       101 |
+|     503 |         111 | A.R. Rahman    | Male   |   54 |       104 |
+|     503 |         111 | A.R. Rahman    | Male   |   54 |       106 |
+|     505 |         111 | A.R. Rahman    | Male   |   54 |       104 |
+|     508 |         111 | A.R. Rahman    | Male   |   54 |       105 |
+|     510 |         111 | A.R. Rahman    | Male   |   54 |       101 |
+|     510 |         111 | A.R. Rahman    | Male   |   54 |       102 |
+|     508 |         222 | Falguni Pathak | Female |   50 |       105 |
+|     507 |         222 | Falguni Pathak | Female |   50 |       106 |
+|     507 |         222 | Falguni Pathak | Female |   50 |       102 |
++---------+-------------+----------------+--------+------+-----------+
+17 rows in set (0.00 sec)
+
+mysql> select *from composes natural join composer;
++-------------+---------+------------------+--------+------+
+| Composer_ID | Song_ID | Composer_Name    | Gender | Age  |
++-------------+---------+------------------+--------+------+
+|         104 |     502 | Armaan Malik     | Male   |   25 |
+|         104 |     504 | Armaan Malik     | Male   |   25 |
+|         104 |     509 | Armaan Malik     | Male   |   25 |
+|         106 |     501 | Vishal Dadlani   | Male   |   47 |
+|         106 |     504 | Vishal Dadlani   | Male   |   47 |
+|         106 |     506 | Vishal Dadlani   | Male   |   47 |
+|         107 |    NULL | Shekhar Ravjiani | Male   |   42 |
+|         111 |     503 | A.R. Rahman      | Male   |   54 |
+|         111 |     505 | A.R. Rahman      | Male   |   54 |
+|         111 |     508 | A.R. Rahman      | Male   |   54 |
+|         111 |     510 | A.R. Rahman      | Male   |   54 |
+|         222 |     508 | Falguni Pathak   | Female |   50 |
+|         222 |     507 | Falguni Pathak   | Female |   50 |
++-------------+---------+------------------+--------+------+
+13 rows in set (0.00 sec)
+
+mysql> select *from sings;
++---------+-----------+
+| Song_ID | Singer_ID |
++---------+-----------+
+|     501 |       101 |
+|     502 |       107 |
+|     503 |       104 |
+|     503 |       106 |
+|     504 |       101 |
+|     504 |       107 |
+|     505 |       104 |
+|     506 |       101 |
+|     507 |       106 |
+|     507 |       102 |
+|     508 |       105 |
+|     509 |       106 |
+|     510 |       101 |
+|     510 |       102 |
+|    NULL |       103 |
++---------+-----------+
+15 rows in set (0.00 sec)
+
+mysql> select song_name from composer,composes,song;
++-------------+
+| song_name   |
++-------------+
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
++-------------+
+650 rows in set (0.00 sec)
+
+mysql> select song_name from composer,composes,song,movie,lyricist where lyricist_name="Gulzar";
++-------------+
+| song_name   |
++-------------+
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Dangal      |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Scam        |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Ghamand kar |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Tinak Tinak |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Malang      |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Ghar Chalen |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Tum se hi   |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| Shukriya    |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| FriendZone  |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
+| Dil Bechara |
++-------------+
+3900 rows in set (0.01 sec)
+
+mysql> select song_name from composer,composes,song,movie,lyricist where lyricist_name="Gulzar" and composer_name="Vishal Dadlani" and movie_name="dangal";
++-------------+
+| song_name   |
++-------------+
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
++-------------+
+130 rows in set (0.00 sec)
+
+mysql> select distinct song_name from composer,composes,song,movie,lyricist where lyricist_name="Gulzar" and composer_name="Vishal Dadlani" and movie_name="dangal";
++-------------+
+| song_name   |
++-------------+
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
++-------------+
+10 rows in set (0.00 sec)
+
+mysql> select distinct song_name from composer,song,movie,lyricist where lyricist_name="Gulzar" and composer_name="Vishal Dadlani" and movie_name="dangal";
++-------------+
+| song_name   |
++-------------+
+| Dangal      |
+| Scam        |
+| Ghamand kar |
+| Tinak Tinak |
+| Malang      |
+| Ghar Chalen |
+| Tum se hi   |
+| Shukriya    |
+| FriendZone  |
+| Dil Bechara |
++-------------+
+10 rows in set (0.00 sec)
+
+mysql> select distinct song_name from composer c,song s,movie m,lyricist l where l.song_id=l.lyricist and m.movie_ID=s.movie_ID and lyricist_name="Gulzar" and composer_name="Vishal Dadlani" and movie_name="dangal";
+ERROR 1054 (42S22): Unknown column 'l.song_id' in 'where clause'
+mysql> select distinct song_name from composer c,song s,movie m,lyricist l where l.song_id=l.lyricist_ID and m.movie_ID=s.movie_ID and lyricist_name="Gulzar" and composer_name="Vishal Dadlani" and movie_name="dangal";
+ERROR 1054 (42S22): Unknown column 'l.song_id' in 'where clause'
+mysql> select distinct song_name from composer c,song s,movie m,lyricist l where l.song_ID=l.lyricist_ID and m.movie_ID=s.movie_ID and lyricist_name="Gulzar" and composer_name="Vishal Dadlani" and movie_name="dangal";
+ERROR 1054 (42S22): Unknown column 'l.song_ID' in 'where clause'
+mysql> notee;
